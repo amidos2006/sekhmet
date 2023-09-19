@@ -1,0 +1,37 @@
+Name,Cooldown,Attack,Health,HealthType,AttackType,HitType,Condition,Effect,Damage,Description
+Absorber,0,0,3,NORMAL,TRIGGER,NORMAL,None,,"let count = 0;
+for(let c of p.cards.concat(op.cards)){
+  if(c.name == c.name){
+    count += 1;
+  }
+}
+dmg = 2 * count - 1;",
+Basic,0,2,3,NORMAL,NORMAL,NORMAL,None,,,
+Rich,0,1,2,NORMAL,NORMAL,NORMAL,onDeath,player.resource += 2,,
+Jet,0,2,2,NORMAL,TRIGGER,NORMAL,None,,,
+Bombardo,0,1,3,NORMAL,NORMAL,EVERYONE,onDeath,dmg = 3; attack();,,
+Discarder,1,2,3,NORMAL,NORMAL,NORMAL,onHit,other.discardHand();,,
+Mage,1,4,2,NORMAL,TRIGGER,CANTHIT,None,,,
+Thief,1,2,2,NORMAL,NORMAL,NORMAL,onHit,other.resource -= 1; player.resource += 1;,,
+Fast,1,4,2,NORMAL,NORMAL,NORMAL,onHit,other.resource += 1;,,
+Normal,1,2,3,NORMAL,AUTO,NORMAL,None,,,
+Upgrader,1,2,3,NORMAL,NORMAL,NORMAL,onSacrifice,next.upgrade += 1,,
+Xena,1,2,2,NORMAL,NORMAL,ALL,None,,,
+Speedy,2,1,3,NORMAL,NORMAL,NORMAL,onSacrifice,next.cooldown -= 3,,
+General,2,1,3,NORMAL,NORMAL,NORMAL,onSacrifice,"lanes[""player""][""attack""] += 2",,
+Hogan,2,1,5,NORMAL,NORMAL,NORMAL,onReady,"swap(current, max(other.lanes.dmg))",,
+Reflector,2,0,3,NORMAL,NORMAL,NORMAL,None,,dmg = oc.dmg;,
+Mimic,2,0,4,NORMAL,TRIGGER,NORMAL,None,,dmg = tc.dmg;,
+Slower,2,1,3,NORMAL,AUTO,NORMAL,onDamaging,other.lane.cooldown += 2,,
+Cooler,2,1,4,NORMAL,NORMAL,NORMAL,None,,dmg = oc.maxCooldown + c.dmg;,
+Mirror,2,0,4,NORMAL,NORMAL,NORMAL,None,,dmg = 2*(c.maxHealth - c.health);,
+Defender,2,1,2,NORMAL,TRIGGER,NORMAL,onSacrifice,"lanes[""player""][""defend""] += 2",,
+Bruce,3,0,4,NORMAL,TRIGGER,NORMAL,None,,dmg = oc.maxHealth;,
+Rocky,3,5,4,NORMAL,TRIGGER,NORMAL,None,,,
+Summoner,3,4,4,NORMAL,AUTO,NORMAL,onReady,lane[0].cooldown -= 1; lane[1].cooldown -= 1; lane[2].cooldown -= 1;,,
+Waller,3,0,2,CAPPED,AUTO,NORMAL,None,,,
+The finger,3,2,3,NORMAL,AUTO,NORMAL,None,,dmg = (1-abs(laneIndex - 1)) * 3 * c.dmg;,
+Neo,4,0,6,NORMAL,AUTO,NORMAL,None,,dmg = op.cards.length * 2;,
+Ball,4,0,8,NORMAL,NORMAL,NORMAL,None,,dmg = c.health;,
+Bulldozer,4,5,5,NORMAL,NORMAL,NORMAL,onDamaged,current.cooldown -= 1,,
+Barbarian,4,3,4,NORMAL,AUTO,NORMAL,onReady,"swap(current, min(other.lanes.health))",,

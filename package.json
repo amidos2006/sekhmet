@@ -1,0 +1,19 @@
+{
+  "name": "sekhmet",
+  "version": "0.0.1",
+  "description": "battle card game for the egyptian goddess of war",
+  "scripts": {
+    "start": "parcel assets/**/* index.html",
+    "serve": "node -r esm src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "boardgame.io": "^0.50.2",
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-json-url-loader": "^0.1.2"
+  }
+}
