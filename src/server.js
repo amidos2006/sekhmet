@@ -1,4 +1,4 @@
-import { Sekhmet } from "./logic/Game";
+import { Sekhmet } from "./logic/game";
 import { Server, Origins } from "boardgame.io/server";
 
 
