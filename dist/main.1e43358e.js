@@ -29349,7 +29349,87 @@ var ButtonEntity = /*#__PURE__*/function (_Entity) {
   return ButtonEntity;
 }(_entity.default);
 exports.ButtonEntity = ButtonEntity;
-},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/entity":"src/jsp/entity.js","../../jsp/input":"src/jsp/input.js"}],"src/ui/entity/graphic.js":[function(require,module,exports) {
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/entity":"src/jsp/entity.js","../../jsp/input":"src/jsp/input.js"}],"src/ui/entity/text.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TextButton = void 0;
+var _JSP = _interopRequireDefault(require("../../jsp/JSP"));
+var _graphics = require("../../jsp/graphics");
+var _hitbox = require("../../jsp/hitbox");
+var _rendering = require("../../jsp/rendering");
+var _button = require("./button");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+var TextButton = /*#__PURE__*/function (_ButtonEntity) {
+  _inherits(TextButton, _ButtonEntity);
+  var _super = _createSuper(TextButton);
+  function TextButton(x, y, image, text, clickFn) {
+    var _this;
+    _classCallCheck(this, TextButton);
+    var backGraphics = new _graphics.Graphic(image);
+    backGraphics.cx = backGraphics.width / 2;
+    backGraphics.cy = backGraphics.height / 2;
+    var textGraphics = new _graphics.BitmapText(_JSP.default.loader.getFile("bmpfont"), text);
+    textGraphics.cx = textGraphics.width / 2;
+    textGraphics.cy = textGraphics.height / 2;
+    textGraphics.tint = _rendering.Color.BLACK;
+    textGraphics.scaleX = 2;
+    textGraphics.scaleY = 2;
+    var temp = new _graphics.GraphicList();
+    temp.add(backGraphics, 0, 0);
+    temp.add(textGraphics, 0, 0);
+    var renderTarget = new _rendering.RenderTarget(backGraphics.width, backGraphics.height);
+    temp.draw(renderTarget, renderTarget.width / 2, renderTarget.height / 2, _rendering.Camera.zeroCamera);
+    _this = _super.call(this, x, y);
+    _this.clickFn = clickFn;
+    _this.graphic = new _graphics.Graphic(renderTarget);
+    _this.graphic.cx = _this.graphic.width / 2;
+    _this.graphic.cy = _this.graphic.height / 2;
+    _this.mask = new _hitbox.Hitbox(-_this.graphic.cx, -_this.graphic.cy, _this.graphic.width, _this.graphic.height);
+    _this.direction = 1;
+    return _this;
+  }
+  _createClass(TextButton, [{
+    key: "onHover",
+    value: function onHover() {
+      this.graphic.scaleX = this.direction * 1.5;
+      this.graphic.scaleY = this.direction * 1.5;
+      this.layer = 10;
+    }
+  }, {
+    key: "onExit",
+    value: function onExit() {
+      this.graphic.scaleX = this.direction * 1;
+      this.graphic.scaleY = this.direction * 1;
+      this.layer = 0;
+    }
+  }, {
+    key: "onClick",
+    value: function onClick() {
+      if (this.clickFn) {
+        this.clickFn(this);
+      }
+    }
+  }]);
+  return TextButton;
+}(_button.ButtonEntity);
+exports.TextButton = TextButton;
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/graphics":"src/jsp/graphics.js","../../jsp/hitbox":"src/jsp/hitbox.js","../../jsp/rendering":"src/jsp/rendering.js","./button":"src/ui/entity/button.js"}],"src/ui/entity/graphic.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29616,6 +29696,7 @@ var _main = require("../../logic/main");
 var _card = require("../entity/card");
 var _graphic = require("../entity/graphic");
 var _selectedcard = require("../entity/selectedcard");
+var _text = require("../entity/text");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -29657,7 +29738,7 @@ var DeckWorld = /*#__PURE__*/function (_World) {
     _this.leftButton = new _graphic.GraphicButton(30, _JSP.default.renderTarget.height / 2 - 50, _JSP.default.loader.getFile("arrow"), _this.previousPage.bind(_assertThisInitialized(_this)));
     _this.leftButton.direction = -1;
     _this.rightButton = new _graphic.GraphicButton(_JSP.default.renderTarget.width - 30, _JSP.default.renderTarget.height / 2 - 50, _JSP.default.loader.getFile("arrow"), _this.nextPage.bind(_assertThisInitialized(_this)));
-    _this.okayButton = new _graphic.GraphicButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height - 195, _JSP.default.loader.getFile("okay"), _this.submitDeck.bind(_assertThisInitialized(_this)));
+    _this.okayButton = new _text.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height - 195, _JSP.default.loader.getFile("button"), "submit", _this.submitDeck.bind(_assertThisInitialized(_this)));
     return _this;
   }
   _createClass(DeckWorld, [{
@@ -29784,14 +29865,75 @@ var DeckWorld = /*#__PURE__*/function (_World) {
   return DeckWorld;
 }(_world.default);
 exports.DeckWorld = DeckWorld;
-},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/world":"src/jsp/world.js","../../logic/cards":"src/logic/cards.js","../../logic/main":"src/logic/main.js","../entity/card":"src/ui/entity/card.js","../entity/graphic":"src/ui/entity/graphic.js","../entity/selectedcard":"src/ui/entity/selectedcard.js"}],"src/main.js":[function(require,module,exports) {
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/world":"src/jsp/world.js","../../logic/cards":"src/logic/cards.js","../../logic/main":"src/logic/main.js","../entity/card":"src/ui/entity/card.js","../entity/graphic":"src/ui/entity/graphic.js","../entity/selectedcard":"src/ui/entity/selectedcard.js","../entity/text":"src/ui/entity/text.js"}],"src/ui/world/lobby.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LobbyWorld = void 0;
+var _JSP = _interopRequireDefault(require("../../jsp/JSP"));
+var _world = _interopRequireDefault(require("../../jsp/world"));
+var _main = require("../../logic/main");
+var _text = require("../entity/text");
+var _deck = require("./deck");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+var LobbyWorld = /*#__PURE__*/function (_World) {
+  _inherits(LobbyWorld, _World);
+  var _super = _createSuper(LobbyWorld);
+  function LobbyWorld() {
+    _classCallCheck(this, LobbyWorld);
+    return _super.call(this);
+  }
+  _createClass(LobbyWorld, [{
+    key: "begin",
+    value: function begin() {
+      _get(_getPrototypeOf(LobbyWorld.prototype), "begin", this).call(this);
+      this.addEntity(new _text.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height / 2 - 50, _JSP.default.loader.getFile("button"), "Create Match", this.createRoom.bind(this)));
+      this.addEntity(new _text.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height / 2 + 50, _JSP.default.loader.getFile("button"), "Join Match", this.joinRoom.bind(this)));
+    }
+  }, {
+    key: "createRoom",
+    value: function createRoom() {
+      _main.GameClient.playerID = "0";
+      _main.GameClient.matchID = "default";
+      _main.GameClient.getAPP().start();
+      _JSP.default.world = new _deck.DeckWorld();
+    }
+  }, {
+    key: "joinRoom",
+    value: function joinRoom() {
+      _main.GameClient.playerID = "1";
+      _main.GameClient.matchID = "default";
+      _main.GameClient.getAPP().start();
+      _JSP.default.world = new _deck.DeckWorld();
+    }
+  }]);
+  return LobbyWorld;
+}(_world.default);
+exports.LobbyWorld = LobbyWorld;
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/world":"src/jsp/world.js","../../logic/main":"src/logic/main.js","../entity/text":"src/ui/entity/text.js","./deck":"src/ui/world/deck.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _JSP = _interopRequireDefault(require("./jsp/JSP"));
 var _rendering = require("./jsp/rendering");
 var _utils = require("./jsp/utils");
-var _main = require("./logic/main");
-var _deck = require("./ui/world/deck");
+var _lobby = require("./ui/world/lobby");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 _JSP.default.init("game", 500, 800, 60);
 _JSP.default.start(function () {
@@ -29799,7 +29941,7 @@ _JSP.default.start(function () {
   _JSP.default.world = new _utils.LoadingWorld(function () {
     _JSP.default.loader.loadFile("cards", "assets/data/cards.json");
     _JSP.default.loader.loadFile("arrow", "assets/graphics/arrow.png");
-    _JSP.default.loader.loadFile("okay", "assets/graphics/okay_button.png");
+    _JSP.default.loader.loadFile("button", "assets/graphics/okay_button.png");
     _JSP.default.loader.loadFile("cooldown", "assets/graphics/cooldown.png");
     for (var _i = 0, _arr = ["normal", "capped"]; _i < _arr.length; _i++) {
       var name = _arr[_i];
@@ -29815,12 +29957,11 @@ _JSP.default.start(function () {
       _JSP.default.loader.loadFile("".concat(_name2, "_selected_card"), "assets/graphics/".concat(_name2, "_selected_card.png"));
     }
   }, function () {
-    _main.GameClient.getAPP().start();
     _JSP.default.backcolor = new _rendering.Color(89, 86, 82);
-    _JSP.default.world = new _deck.DeckWorld();
+    _JSP.default.world = new _lobby.LobbyWorld();
   });
 });
-},{"./jsp/JSP":"src/jsp/JSP.js","./jsp/rendering":"src/jsp/rendering.js","./jsp/utils":"src/jsp/utils.js","./logic/main":"src/logic/main.js","./ui/world/deck":"src/ui/world/deck.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./jsp/JSP":"src/jsp/JSP.js","./jsp/rendering":"src/jsp/rendering.js","./jsp/utils":"src/jsp/utils.js","./ui/world/lobby":"src/ui/world/lobby.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -29845,7 +29986,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63641" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64185" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

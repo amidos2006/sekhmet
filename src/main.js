@@ -1,8 +1,7 @@
 import JSP from './jsp/JSP';
 import { Color } from './jsp/rendering';
 import { LoadingWorld } from './jsp/utils';
-import { GameClient } from './logic/main';
-import { DeckWorld } from './ui/world/deck';
+import { LobbyWorld } from './ui/world/lobby';
 
 JSP.init("game", 500, 800, 60);
 JSP.start(function(){
@@ -11,7 +10,7 @@ JSP.start(function(){
         JSP.loader.loadFile("cards", "assets/data/cards.json");
 
         JSP.loader.loadFile("arrow", "assets/graphics/arrow.png");
-        JSP.loader.loadFile("okay", "assets/graphics/okay_button.png");
+        JSP.loader.loadFile("button", "assets/graphics/okay_button.png");
 
         JSP.loader.loadFile("cooldown", "assets/graphics/cooldown.png");
 
@@ -29,8 +28,7 @@ JSP.start(function(){
         }
     },
     function(){
-        GameClient.getAPP().start();
         JSP.backcolor = new Color(89, 86, 82);
-        JSP.world = new DeckWorld();
+        JSP.world = new LobbyWorld();
     });
 })

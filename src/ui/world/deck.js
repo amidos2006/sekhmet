@@ -5,6 +5,7 @@ import { GameClient } from "../../logic/main";
 import { CardEntity } from "../entity/card";
 import { GraphicButton } from "../entity/graphic";
 import { SelectedCardEntity } from "../entity/selectedcard";
+import { TextButton } from "../entity/text";
 
 export class DeckWorld extends World{
     constructor(){
@@ -30,8 +31,8 @@ export class DeckWorld extends World{
         this.leftButton.direction = -1;
         this.rightButton = new GraphicButton(JSP.renderTarget.width - 30, JSP.renderTarget.height/2 - 50, 
             JSP.loader.getFile("arrow"), this.nextPage.bind(this));
-        this.okayButton = new GraphicButton(JSP.renderTarget.width/2, JSP.renderTarget.height - 195, 
-            JSP.loader.getFile("okay"), this.submitDeck.bind(this));
+        this.okayButton = new TextButton(JSP.renderTarget.width/2, JSP.renderTarget.height - 195, 
+            JSP.loader.getFile("button"), "submit", this.submitDeck.bind(this));
         
     }
 
