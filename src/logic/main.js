@@ -26,6 +26,10 @@ class SekhmetClient {
     stop(){
         this.client.stop();
     }
+
+    reset(){
+        this.client.reset();
+    }
 }
 
 export const GameClient = {

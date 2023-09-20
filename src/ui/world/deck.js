@@ -6,6 +6,8 @@ import { CardEntity } from "../entity/card";
 import { GraphicButton } from "../entity/graphic";
 import { SelectedCardEntity } from "../entity/selectedcard";
 import { TextButton } from "../entity/text";
+import { GameplayWorld } from "./gameplay";
+import { WaitingWorld } from "./waiting";
 
 export class DeckWorld extends World{
     constructor(){
@@ -62,11 +64,21 @@ export class DeckWorld extends World{
         }
     }
 
+    waitForOtherPlayer(){
+        return GameClient.getAPP().state.ctx.phase == "discard";
+    }
+
+    startGame(){
+        JSP.world = new GameplayWorld();
+    }
+
     submitDeck(){
         if(this.getSelectedCards().length < 15){
             return;
         }
         GameClient.getAPP().moves.useDeck(this.getSelectedCards());
+        JSP.world = new WaitingWorld("... Waiting for other Player ...", 
+            this.waitForOtherPlayer.bind(this), this.startGame.bind(this));
     }
 
     selectCard(cardButton){
