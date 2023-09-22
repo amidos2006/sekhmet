@@ -63,7 +63,7 @@ export class InputTextEntity extends Entity{
         if(this.active){
             let before = this._text.toString();
             if(this.maxLength <= 0 || this._text.length < this.maxLength){
-                for(let i=KeyboardKeys.NUM_0; i<KeyboardKeys.Z; i++){
+                for(let i=KeyboardKeys.NUM_0; i<=KeyboardKeys.Z; i++){
                     if(JSP.input.keyPressed(i)){
                         this._text += JSP.input.keyString().trim().toLowerCase();
                         break;
