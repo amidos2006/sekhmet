@@ -50,7 +50,7 @@ export class InputTextEntity extends Entity{
     }
 
     get text(){
-        return this.text;
+        return this._text;
     }
 
     update(){

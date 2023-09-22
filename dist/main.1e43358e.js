@@ -29362,7 +29362,7 @@ var InputTextEntity = /*#__PURE__*/function (_Entity) {
   _createClass(InputTextEntity, [{
     key: "text",
     get: function get() {
-      return this.text;
+      return this._text;
     }
   }, {
     key: "update",
@@ -30316,7 +30316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64139" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60995" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
