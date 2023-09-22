@@ -1,6 +1,7 @@
 import JSP from "../../jsp/JSP";
 import World from "../../jsp/world";
 import { GameClient } from "../../logic/main";
+import { InputTextEntity } from "../entity/inputtext";
 import { TextButton } from "../entity/textbutton";
 import { DeckWorld } from "./deck";
 import { WaitingWorld } from "./waiting";
@@ -17,6 +18,9 @@ export class LobbyWorld extends World{
             JSP.loader.getFile("button"), "Create Match", this.createRoom.bind(this)));
         this.addEntity(new TextButton(JSP.renderTarget.width/2, JSP.renderTarget.height/2+50, 
             JSP.loader.getFile("button"), "Join Match", this.joinRoom.bind(this)));
+
+        this.input = new InputTextEntity(JSP.renderTarget.width/2, JSP.renderTarget.height/2, 10);
+        this.addEntity(this.input);
     }
 
     waitForPlayer2(){
@@ -42,7 +46,7 @@ export class LobbyWorld extends World{
 
     joinRoom(){
         GameClient.playerID = "1";
-        GameClient.matchID = "default";
+        GameClient.matchID = this.input.text;
         GameClient.getAPP().start();
         JSP.world = new WaitingWorld("... Waiting for Server Connection ...", 
             this.waitForPlayer1.bind(this), this.advanceToDeckBuilding.bind(this));

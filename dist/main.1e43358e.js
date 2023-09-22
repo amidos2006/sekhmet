@@ -28807,7 +28807,7 @@ var Card = /*#__PURE__*/function () {
   }, {
     key: "getDamage",
     value: function getDamage(c, tc, oc, laneIndex, p, op) {
-      var dmgFunction = new Function("let dmg = 0;\n" + this.dmgScript + "\nreturn dmg;\n");
+      var dmgFunction = new Function("c", "tc", "oc", "laneIndex", "p", "op", "let dmg = 0;\n".concat(this.dmgScript, "\nreturn dmg;\n"));
       return dmgFunction(c, tc, oc, laneIndex, p, op);
     }
   }]);
@@ -29289,7 +29289,111 @@ var GameClient = {
   }
 };
 exports.GameClient = GameClient;
-},{"boardgame.io/client":"node_modules/boardgame.io/dist/esm/client.js","boardgame.io/multiplayer":"node_modules/boardgame.io/dist/esm/multiplayer.js","./game":"src/logic/game.js"}],"src/ui/entity/button.js":[function(require,module,exports) {
+},{"boardgame.io/client":"node_modules/boardgame.io/dist/esm/client.js","boardgame.io/multiplayer":"node_modules/boardgame.io/dist/esm/multiplayer.js","./game":"src/logic/game.js"}],"src/ui/entity/inputtext.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.InputTextEntity = void 0;
+var _JSP = _interopRequireDefault(require("../../jsp/JSP"));
+var _entity = _interopRequireDefault(require("../../jsp/entity"));
+var _graphics = require("../../jsp/graphics");
+var _hitbox = require("../../jsp/hitbox");
+var _input = require("../../jsp/input");
+var _rendering = require("../../jsp/rendering");
+var _tweens = require("../../jsp/tweens");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+var InputTextEntity = /*#__PURE__*/function (_Entity) {
+  _inherits(InputTextEntity, _Entity);
+  var _super = _createSuper(InputTextEntity);
+  function InputTextEntity(x, y, maxLength) {
+    var _this;
+    _classCallCheck(this, InputTextEntity);
+    if (maxLength === undefined) maxLength = 10;
+    _this = _super.call(this, x, y);
+    _this._text = "";
+    _this._flicker = "";
+    _this.active = false;
+    _this.maxLength = maxLength;
+    _this.renderText = new _graphics.BitmapText(_JSP.default.loader.getFile("bmpfont"), "");
+    _this.renderText.scaleX = 2;
+    _this.renderText.scaleY = 2;
+    _this.graphic = new _graphics.GraphicList();
+    if (_this.maxLength > 0) {
+      var renderTarget = new _rendering.RenderTarget(_this.maxLength * 16, 20);
+      renderTarget.drawFillRect(0, 0, renderTarget.width, renderTarget.height, _rendering.Color.BLACK);
+      var temp = new _graphics.Graphic(renderTarget);
+      temp.cx = temp.width / 2;
+      temp.cy = temp.height / 2;
+      _this.graphic.add(temp);
+      _this.mask = new _hitbox.Hitbox(-temp.cx, -temp.cy, temp.width, temp.height);
+    }
+    _this.graphic.add(_this.renderText, -_this.maxLength * 8 + 32, -6);
+    _this.addTween(new _tweens.Alarm(30, _tweens.Tween.LOOPING, function () {
+      if (this.active) {
+        if (this._flicker == "") {
+          this._flicker = "|";
+        } else {
+          this._flicker = "";
+        }
+      } else {
+        this._flicker = "";
+      }
+      this.renderText.text = this._text + this._flicker;
+    }.bind(_assertThisInitialized(_this))), true);
+    return _this;
+  }
+  _createClass(InputTextEntity, [{
+    key: "text",
+    get: function get() {
+      return this.text;
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      _get(_getPrototypeOf(InputTextEntity.prototype), "update", this).call(this);
+      if (_JSP.default.input.mouseReleased(_input.MouseKeys.LEFT)) {
+        this.active = this.collidePoint(this.x, this.y, _JSP.default.input.mouseX(), _JSP.default.input.mouseY());
+      }
+      if (this.active) {
+        var before = this._text.toString();
+        if (this.maxLength <= 0 || this._text.length < this.maxLength) {
+          for (var i = _input.KeyboardKeys.NUM_0; i < _input.KeyboardKeys.Z; i++) {
+            if (_JSP.default.input.keyPressed(i)) {
+              this._text += _JSP.default.input.keyString().trim().toLowerCase();
+              break;
+            }
+          }
+        }
+        if (_JSP.default.input.keyPressed(_input.KeyboardKeys.BACKSPACE) && this._text.length > 0) {
+          this._text = this._text.slice(0, this._text.length - 1);
+        }
+        if (before != this._text) {
+          this.renderText.text = this._text + this._flicker;
+        }
+      }
+    }
+  }]);
+  return InputTextEntity;
+}(_entity.default);
+exports.InputTextEntity = InputTextEntity;
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/entity":"src/jsp/entity.js","../../jsp/graphics":"src/jsp/graphics.js","../../jsp/hitbox":"src/jsp/hitbox.js","../../jsp/input":"src/jsp/input.js","../../jsp/rendering":"src/jsp/rendering.js","../../jsp/tweens":"src/jsp/tweens.js"}],"src/ui/entity/button.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30081,6 +30185,7 @@ exports.LobbyWorld = void 0;
 var _JSP = _interopRequireDefault(require("../../jsp/JSP"));
 var _world = _interopRequireDefault(require("../../jsp/world"));
 var _main = require("../../logic/main");
+var _inputtext = require("../entity/inputtext");
 var _textbutton = require("../entity/textbutton");
 var _deck = require("./deck");
 var _waiting = require("./waiting");
@@ -30113,6 +30218,8 @@ var LobbyWorld = /*#__PURE__*/function (_World) {
       _get(_getPrototypeOf(LobbyWorld.prototype), "begin", this).call(this);
       this.addEntity(new _textbutton.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height / 2 - 50, _JSP.default.loader.getFile("button"), "Create Match", this.createRoom.bind(this)));
       this.addEntity(new _textbutton.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height / 2 + 50, _JSP.default.loader.getFile("button"), "Join Match", this.joinRoom.bind(this)));
+      this.input = new _inputtext.InputTextEntity(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height / 2, 10);
+      this.addEntity(this.input);
     }
   }, {
     key: "waitForPlayer2",
@@ -30142,7 +30249,7 @@ var LobbyWorld = /*#__PURE__*/function (_World) {
     key: "joinRoom",
     value: function joinRoom() {
       _main.GameClient.playerID = "1";
-      _main.GameClient.matchID = "default";
+      _main.GameClient.matchID = this.input.text;
       _main.GameClient.getAPP().start();
       _JSP.default.world = new _waiting.WaitingWorld("... Waiting for Server Connection ...", this.waitForPlayer1.bind(this), this.advanceToDeckBuilding.bind(this));
     }
@@ -30150,7 +30257,7 @@ var LobbyWorld = /*#__PURE__*/function (_World) {
   return LobbyWorld;
 }(_world.default);
 exports.LobbyWorld = LobbyWorld;
-},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/world":"src/jsp/world.js","../../logic/main":"src/logic/main.js","../entity/textbutton":"src/ui/entity/textbutton.js","./deck":"src/ui/world/deck.js","./waiting":"src/ui/world/waiting.js"}],"src/main.js":[function(require,module,exports) {
+},{"../../jsp/JSP":"src/jsp/JSP.js","../../jsp/world":"src/jsp/world.js","../../logic/main":"src/logic/main.js","../entity/inputtext":"src/ui/entity/inputtext.js","../entity/textbutton":"src/ui/entity/textbutton.js","./deck":"src/ui/world/deck.js","./waiting":"src/ui/world/waiting.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _JSP = _interopRequireDefault(require("./jsp/JSP"));
@@ -30209,7 +30316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57971" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64139" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
