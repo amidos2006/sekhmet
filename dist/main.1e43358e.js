@@ -29992,7 +29992,7 @@ var GameplayWorld = /*#__PURE__*/function (_World) {
       } finally {
         _iterator2.f();
       }
-      this.discardButton = new _textbutton.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height - 195, _JSP.default.loader.getFile("button"), "discard", this.submitDiscard.bind(this));
+      this.discardButton = new _textbutton.TextButton(_JSP.default.renderTarget.width / 2, _JSP.default.renderTarget.height - 300, _JSP.default.loader.getFile("button"), "discard", this.submitDiscard.bind(this));
       this.addEntity(this.player.hand);
       this.addEntity(this.discardButton);
     }

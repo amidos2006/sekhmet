@@ -27,7 +27,7 @@ export class GameplayWorld extends World{
 
         }
 
-        this.discardButton = new TextButton(JSP.renderTarget.width/2, JSP.renderTarget.height - 195, 
+        this.discardButton = new TextButton(JSP.renderTarget.width/2, JSP.renderTarget.height - 300, 
             JSP.loader.getFile("button"), "discard", this.submitDiscard.bind(this));
 
         this.addEntity(this.player.hand);
