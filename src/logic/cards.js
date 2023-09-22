@@ -106,7 +106,8 @@ class Card{
     }
 
     getDamage(c, tc, oc, laneIndex, p, op){
-        let dmgFunction = new Function("let dmg = 0;\n" + this.dmgScript + "\nreturn dmg;\n");
+        let dmgFunction = new Function("c", "tc", "oc", "laneIndex", "p", "op",
+            `let dmg = 0;\n${this.dmgScript}\nreturn dmg;\n`);
         return dmgFunction(c, tc, oc, laneIndex, p, op);
     }
 }

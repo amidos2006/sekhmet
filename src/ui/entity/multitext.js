@@ -31,4 +31,21 @@ export class MultiTextEntity extends Entity{
         this.graphic.scaleX = 2;
         this.graphic.scaleY = 2;
     }
+
+    set scale(value){
+        this.graphic.scaleX = value;
+        this.graphic.scaleY = value;
+    }
+
+    get scale(){
+        return this.graphic.scaleX;
+    }
+
+    set tint(value){
+        this.graphic.tint = value;
+    }
+
+    get tint(){
+        return this.graphic.tint;
+    }
 }
