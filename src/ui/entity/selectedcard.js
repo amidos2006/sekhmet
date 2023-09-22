@@ -2,7 +2,7 @@ import JSP from "../../jsp/JSP";
 import { BitmapText, Graphic, GraphicList } from "../../jsp/graphics";
 import { Camera, Color, RenderTarget } from "../../jsp/rendering";
 import { getCard } from "../../logic/cards";
-import { GraphicButton } from "./graphic";
+import { GraphicButton } from "./graphicbutton";
 
 export class SelectedCardEntity extends GraphicButton{
     constructor(x, y, cardName, cardCount, clickFn){

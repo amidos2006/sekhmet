@@ -1,7 +1,7 @@
 import JSP from "../../jsp/JSP";
 import World from "../../jsp/world";
 import { GameClient } from "../../logic/main";
-import { TextButton } from "../entity/text";
+import { TextButton } from "../entity/textbutton";
 import { DeckWorld } from "./deck";
 import { WaitingWorld } from "./waiting";
 
@@ -19,8 +19,12 @@ export class LobbyWorld extends World{
             JSP.loader.getFile("button"), "Join Match", this.joinRoom.bind(this)));
     }
 
-    waitForServerConnection(){
-        return GameClient.getAPP().state != null;
+    waitForPlayer2(){
+        return GameClient.getAPP().state != null && GameClient.getAPP().client.matchData[1].isConnected;
+    }
+
+    waitForPlayer1(){
+        return GameClient.getAPP().state != null && GameClient.getAPP().client.matchData[0].isConnected;
     }
 
     advanceToDeckBuilding(){
@@ -29,10 +33,11 @@ export class LobbyWorld extends World{
 
     createRoom(){
         GameClient.playerID = "0";
-        GameClient.matchID = "default";
+        GameClient.matchID = (+new Date()).toString(36);
+        console.log(GameClient.matchID)
         GameClient.getAPP().start();
-        JSP.world = new WaitingWorld("... Waiting for Server Connection ...", 
-            this.waitForServerConnection.bind(this), this.advanceToDeckBuilding.bind(this));
+        JSP.world = new WaitingWorld(`... Waiting for other Player ...\n\nRoom Code: ${GameClient.matchID}`, 
+            this.waitForPlayer2.bind(this), this.advanceToDeckBuilding.bind(this));
     }
 
     joinRoom(){
@@ -40,6 +45,6 @@ export class LobbyWorld extends World{
         GameClient.matchID = "default";
         GameClient.getAPP().start();
         JSP.world = new WaitingWorld("... Waiting for Server Connection ...", 
-            this.waitForServerConnection.bind(this), this.advanceToDeckBuilding.bind(this));
+            this.waitForPlayer1.bind(this), this.advanceToDeckBuilding.bind(this));
     }
 }

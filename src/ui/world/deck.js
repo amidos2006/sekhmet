@@ -3,9 +3,9 @@ import World from "../../jsp/world";
 import { getCardNames } from "../../logic/cards";
 import { GameClient } from "../../logic/main";
 import { CardEntity } from "../entity/card";
-import { GraphicButton } from "../entity/graphic";
+import { GraphicButton } from "../entity/graphicbutton";
 import { SelectedCardEntity } from "../entity/selectedcard";
-import { TextButton } from "../entity/text";
+import { TextButton } from "../entity/textbutton";
 import { GameplayWorld } from "./gameplay";
 import { WaitingWorld } from "./waiting";
 

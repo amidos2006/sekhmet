@@ -183,11 +183,11 @@ export const Sekhmet = {
                 stages: {
                     setup: {
                         moves: {
-                            useDeck: function({ G, playerID }, deck){
-                                console.log(deck);
+                            useDeck: function({ G, playerID, random }, deck){
                                 if(deck.length < MAX_VALUES){
                                     return INVALID_MOVE;
                                 }
+                                deck = random.Shuffle(deck);
                                 G.players[playerID].deck = deck;
                             }
                         },
@@ -226,7 +226,7 @@ export const Sekhmet = {
                                 let card2 = G.players[playerID].hand.splice(cardIndex2 - 1, 1)[0];
                                 G.players[playerID].deck.push(card1);
                                 G.players[playerID].deck.push(card2);
-                                random.shuffle(G.players[playerID].deck)
+                                G.players[playerID].deck = random.Shuffle(G.players[playerID].deck);
                             },
                         },
                     },
@@ -300,7 +300,7 @@ export const Sekhmet = {
                                     }
                                     G.players[ctx.currentPlayer].deck = G.players[ctx.currentPlayer].discard;
                                     G.players[ctx.currentPlayer].discard = [];
-                                    random.shuffle(G.players[ctx.currentPlayer].deck);
+                                    G.players[ctx.currentPlayer].deck = random.Shuffle(G.players[ctx.currentPlayer].deck);
                                 }
                                 drawCard(G, ctx.currentPlayer);
                             }

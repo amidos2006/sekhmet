@@ -3,6 +3,7 @@ import Entity from "../../jsp/entity";
 import { BitmapText } from "../../jsp/graphics";
 import { Color } from "../../jsp/rendering";
 import World from "../../jsp/world";
+import { MultiTextEntity } from "../entity/multitext";
 
 export class WaitingWorld extends World{
     constructor(text, checkFn, completeFn){
@@ -15,14 +16,7 @@ export class WaitingWorld extends World{
 
     begin(){
         super.begin();
-
-        let waitingText = new BitmapText(JSP.loader.getFile("bmpfont"), this.text);
-        waitingText.cx = waitingText.width/2;
-        waitingText.cy = waitingText.height/2;
-        waitingText.tint = Color.WHITE;
-        waitingText.scaleX = 2;
-        waitingText.scaleY = 2;
-        this.addEntity(new Entity(JSP.renderTarget.width/2, JSP.renderTarget.height/2, waitingText));
+        this.addEntity(new MultiTextEntity(JSP.renderTarget.width/2, JSP.renderTarget.height/2, this.text));
     }
 
     update(){
